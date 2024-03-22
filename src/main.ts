@@ -21,6 +21,10 @@ const sketch = (p: p5) => {
       p.createVector(0, -headConfig.heightMid / 2 - headConfig.heightTop)
     );
     const bodyBottom = drawBody(p, headBottom);
+
+    for (const anchor of bodyBottom) {
+      p.line(anchor.x, anchor.y, anchor.x, anchor.y + 100);
+    }
   };
 };
 

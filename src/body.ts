@@ -9,7 +9,7 @@ const config = {
   diskExpansion: 20,
 };
 
-export function drawBody(p: p5, start: p5.Vector): p5.Vector {
+export function drawBody(p: p5, start: p5.Vector): p5.Vector[] {
   const { scale, neckHeight, stretch, midHeight, diskExpansion } = config;
 
   const vec = p.createVector(headConfig.vec.x, headConfig.vec.y).normalize();
@@ -63,11 +63,14 @@ export function drawBody(p: p5, start: p5.Vector): p5.Vector {
   p.stroke("yellow");
   p.strokeWeight(5);
 
+  const bottomVertices: p5.Vector[] = [];
+
   for (let i = 0; i < 6; i++) {
     const angle = (i / 6) * p.TWO_PI;
     const newPoint = p.createVector(0, point.y);
     newPoint.x += 30 * Math.cos(angle);
     newPoint.y += Math.sin(angle) * (Math.sin(angle) > 0 ? 15 : 10);
+    bottomVertices.push(newPoint.copy().add(start));
     p.vertex(newPoint.x, newPoint.y);
   }
 
@@ -75,5 +78,5 @@ export function drawBody(p: p5, start: p5.Vector): p5.Vector {
 
   p.pop();
 
-  return p.createVector(start.x, start.y + point.y);
+  return bottomVertices;
 }
