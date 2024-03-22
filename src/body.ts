@@ -7,8 +7,8 @@ const config = {
   stretch: 5,
   midHeight: 80,
   diskExpansion: 20,
-  diskWidth: 50,
-  diskHeight: 40,
+  diskWidth: 30,
+  diskHeight: 20,
 };
 
 export function drawBody(p: p5, start: p5.Vector): p5.Vector[] {
@@ -72,10 +72,12 @@ export function drawBody(p: p5, start: p5.Vector): p5.Vector[] {
   for (let i = 0; i < 6; i++) {
     const angle = (i / 6) * p.TWO_PI;
     const newPoint = p.createVector(0, point.y);
-    newPoint.x += config.diskWidth * Math.cos(angle);
-    newPoint.y +=
-      Math.sin(angle) *
-      (Math.sin(angle) > 0 ? config.diskHeight : config.diskHeight * 0.8);
+
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+
+    newPoint.x += config.diskWidth * cos;
+    newPoint.y += sin * config.diskHeight * (sin > 0 ? 1 : 0.8);
     bottomVertices.push(newPoint.copy().add(start));
     p.vertex(newPoint.x, newPoint.y);
   }
