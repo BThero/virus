@@ -7,6 +7,8 @@ const config = {
   stretch: 5,
   midHeight: 80,
   diskExpansion: 20,
+  diskWidth: 50,
+  diskHeight: 40,
 };
 
 export function drawBody(p: p5, start: p5.Vector): p5.Vector[] {
@@ -54,7 +56,9 @@ export function drawBody(p: p5, start: p5.Vector): p5.Vector[] {
   p.endShape(p.CLOSE);
 
   p.ellipseMode(p.CENTER);
-  p.ellipse(0, point.y, point.x * 2, 20);
+  p.fill("yellow");
+  p.noStroke();
+  p.ellipse(0, point.y, point.x * 2, diskExpansion);
 
   point.x += diskExpansion;
 
@@ -68,8 +72,10 @@ export function drawBody(p: p5, start: p5.Vector): p5.Vector[] {
   for (let i = 0; i < 6; i++) {
     const angle = (i / 6) * p.TWO_PI;
     const newPoint = p.createVector(0, point.y);
-    newPoint.x += 30 * Math.cos(angle);
-    newPoint.y += Math.sin(angle) * (Math.sin(angle) > 0 ? 15 : 10);
+    newPoint.x += config.diskWidth * Math.cos(angle);
+    newPoint.y +=
+      Math.sin(angle) *
+      (Math.sin(angle) > 0 ? config.diskHeight : config.diskHeight * 0.8);
     bottomVertices.push(newPoint.copy().add(start));
     p.vertex(newPoint.x, newPoint.y);
   }

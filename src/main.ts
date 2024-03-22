@@ -24,19 +24,23 @@ const sketch = (p: p5) => {
     );
     const bodyBottom = drawBody(p, headBottom);
 
-    for (const anchor of bodyBottom) {
-      let chain = new Bone(
-        anchor.x,
-        anchor.y,
-        p.HALF_PI,
-        50,
-        new Bone(50, 0, 0, 50)
-      );
+    for (const [index, anchor] of bodyBottom.entries()) {
+      const angle = (index / 6) * p.TWO_PI;
+      let secondJoint = new Bone(50, 0, 0, 50);
+      let firstJoint = new Bone(anchor.x, anchor.y, angle, 50, secondJoint);
 
-      for (let i = 0; i < 10; i++) {
-        chain.updateIK([p.mouseX - p.width / 2, p.mouseY - p.height / 2]);
+      const tarX = p.mouseX - p.width / 2 + anchor.x * 20;
+      const tarY = p.mouseY - p.height / 2 + anchor.y * 20;
+
+      for (let i = 0; i < 3; i++) {
+        secondJoint.updateIK([tarX, tarY]);
       }
-      chain.draw(p);
+
+      for (let i = 0; i < 2; i++) {
+        firstJoint.updateIK([tarX, tarY]);
+      }
+
+      firstJoint.draw(p);
     }
 
     p.pop();
