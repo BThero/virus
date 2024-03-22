@@ -9,11 +9,11 @@ const head = {
   vec: { x: 5, y: 2 },
 };
 
-function drawHead(p: p5) {
+function drawHead(p: p5, start: p5.Vector): p5.Vector {
   p.push();
 
   const { width, height, heightMid, scale } = head;
-  p.translate(0, -heightMid / 2 - height);
+  p.translate(start.x, start.y);
 
   const vec = p.createVector(head.vec.x, head.vec.y).normalize();
 
@@ -73,9 +73,11 @@ function drawHead(p: p5) {
   p.endShape();
 
   p.pop();
+
+  return p.createVector(start.x, start.y + tmp2 + height / 2);
 }
 
-function drawBody(p: p5) {
+function drawBody(p: p5, start: p5.Vector) {
   const vec = p.createVector(head.vec.x, head.vec.y).normalize();
   const tmp2 = head.height + head.heightMid + vec.copy().mult(head.width / 2).y;
 
@@ -91,8 +93,7 @@ function drawBody(p: p5) {
   p.fill("yellow");
 
   p.beginShape();
-  p.translate(0, -head.heightMid / 2 - head.height);
-  p.translate(0, headLowMid[1]);
+  p.translate(start.x, start.y);
 
   const scale = 0.2;
   const neckHeight = 10;
@@ -160,8 +161,11 @@ const sketch = (p: p5) => {
     p.stroke("yellow");
     p.strokeWeight(1);
     // p.ellipse(0, 0, 50);
-    drawHead(p);
-    drawBody(p);
+    const headBottom = drawHead(
+      p,
+      p.createVector(0, -head.heightMid / 2 - head.height)
+    );
+    drawBody(p, headBottom);
   };
 };
 
