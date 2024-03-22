@@ -3,6 +3,7 @@ import p5 from "p5";
 
 import { drawHead, config as headConfig } from "./head";
 import { drawBody } from "./body";
+import { Bone } from "./bone";
 
 const sketch = (p: p5) => {
   p.setup = () => {
@@ -10,6 +11,7 @@ const sketch = (p: p5) => {
   };
 
   p.draw = () => {
+    p.push();
     p.translate(p.width / 2, p.height / 2);
     p.background("black");
     p.noFill();
@@ -23,8 +25,21 @@ const sketch = (p: p5) => {
     const bodyBottom = drawBody(p, headBottom);
 
     for (const anchor of bodyBottom) {
-      p.line(anchor.x, anchor.y, anchor.x, anchor.y + 100);
+      let chain = new Bone(
+        anchor.x,
+        anchor.y,
+        p.HALF_PI,
+        50,
+        new Bone(50, 0, 0, 50)
+      );
+
+      for (let i = 0; i < 10; i++) {
+        chain.updateIK([p.mouseX - p.width / 2, p.mouseY - p.height / 2]);
+      }
+      chain.draw(p);
     }
+
+    p.pop();
   };
 };
 
