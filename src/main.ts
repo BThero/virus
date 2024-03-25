@@ -55,7 +55,7 @@ const sketch = (p: p5) => {
     p.translate(-p.width / 2, -p.height / 2);
     drawVirus(
       p,
-      p.createVector(0.5 * p.width, 0.4 * p.height),
+      p.createVector(0.5 * p.width, 0.5 * p.height - 200),
       1,
       p.createVector(p.width / 2, virusLegs.get() + p.height / 2)
     );
@@ -73,6 +73,15 @@ const sketch = (p: p5) => {
 
     virusRotation.move();
     virusLegs.move();
+  };
+
+  p.windowResized = () => {
+    p.resizeCanvas(p.windowWidth, p.windowHeight);
+    particles = [];
+
+    for (let i = 0; i < 1000; i++) {
+      particles.push(createParticle());
+    }
   };
 };
 
