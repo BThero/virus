@@ -7,6 +7,8 @@ import { Fluctuation } from "./fluctuation";
 import { skewedRandom } from "./utils";
 import { Easings, When, mapWithEasing } from "./easing";
 
+import hakenLogoUrl from "/haken-logo-white.png";
+
 const createFluctuatingValue = (
   fluctation: Fluctuation,
   value: number,
@@ -40,15 +42,9 @@ const sketch = (p: p5) => {
   }
 
   p.preload = () => {
-    hakenImage = p.loadImage(
-      "src/assets/haken-logo-white.png",
-      () => {
-        console.log("success");
-      },
-      (event) => {
-        console.error("failure", event);
-      }
-    );
+    hakenImage = p.loadImage(hakenLogoUrl, undefined, (event) => {
+      console.error("failure", event);
+    });
   };
 
   p.setup = () => {
