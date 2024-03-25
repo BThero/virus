@@ -1,7 +1,7 @@
 import p5 from "p5";
 import { Bone } from "./bone";
 
-export function drawLegs(p: p5, anchors: p5.Vector[], isInteractive: boolean) {
+export function drawLegs(p: p5, anchors: p5.Vector[], ground?: p5.Vector) {
   const boneLength = 80;
 
   for (const [index, anchor] of anchors.entries()) {
@@ -15,9 +15,9 @@ export function drawLegs(p: p5, anchors: p5.Vector[], isInteractive: boolean) {
       secondJoint
     );
 
-    if (isInteractive) {
-      const tarX = p.mouseX - p.width / 2 + anchor.x;
-      const tarY = p.mouseY - p.height / 2 + anchor.y;
+    if (ground) {
+      const tarX = ground.x - p.width / 2 + anchor.x;
+      const tarY = ground.y - p.height / 2 + anchor.y;
 
       for (let i = 0; i < 3; i++) {
         secondJoint.updateIK([tarX, tarY]);

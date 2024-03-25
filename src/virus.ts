@@ -7,7 +7,7 @@ export const drawVirus = (
   p: p5,
   start: p5.Vector,
   scale: number,
-  isInteractive: boolean = false
+  ground?: p5.Vector
 ) => {
   p.push();
   p.translate(start.x, start.y);
@@ -18,7 +18,7 @@ export const drawVirus = (
 
   const headBottom = drawHead(p, p.createVector(0, 0));
   const bodyBottom = drawBody(p, headBottom);
-  drawLegs(p, bodyBottom, isInteractive);
+  drawLegs(p, bodyBottom, ground);
 
   p.pop();
 };

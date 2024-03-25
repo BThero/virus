@@ -6,10 +6,26 @@ import { Particle } from "./particle";
 import { Fluctuation } from "./fluctuation";
 import { skewedRandom } from "./utils";
 
+const createFluctuatingValue = (
+  fluctation: Fluctuation,
+  value: number,
+  scale: number
+) => {
+  return {
+    get: () => value,
+    move: () => {
+      value += skewedRandom(-1, 1, fluctation.factor) * scale;
+      fluctation.move();
+    },
+  };
+};
+
+type FluctuatingValue = ReturnType<typeof createFluctuatingValue>;
+
 const sketch = (p: p5) => {
   let particles: Particle[] = [];
-  let virusFluctuation: Fluctuation;
-  let virusRotation = 0;
+  let virusRotation: FluctuatingValue;
+  let virusLegs: FluctuatingValue;
 
   function createParticle() {
     const pos = p.createVector(p.random(p.width), p.random(p.height));
@@ -25,7 +41,8 @@ const sketch = (p: p5) => {
       particles.push(createParticle());
     }
 
-    virusFluctuation = new Fluctuation(0, 1, 10);
+    virusRotation = createFluctuatingValue(new Fluctuation(0, 1, 10), 0, 0.001);
+    virusLegs = createFluctuatingValue(new Fluctuation(0, 1, 10), 200, 2);
     p.frameRate(24);
   };
 
@@ -34,11 +51,14 @@ const sketch = (p: p5) => {
 
     p.push();
     p.translate(p.width / 2, p.height / 2);
-    p.rotate(virusRotation);
-    virusRotation += skewedRandom(-0.001, 0.001, virusFluctuation.factor);
-    virusFluctuation.move();
+    p.rotate(virusRotation.get());
     p.translate(-p.width / 2, -p.height / 2);
-    drawVirus(p, p.createVector(0.5 * p.width, 0.4 * p.height), 1, true);
+    drawVirus(
+      p,
+      p.createVector(0.5 * p.width, 0.4 * p.height),
+      1,
+      p.createVector(p.width / 2, virusLegs.get() + p.height / 2)
+    );
     p.pop();
 
     const offset = p.createVector(
@@ -50,6 +70,9 @@ const sketch = (p: p5) => {
       particle.draw(p, offset);
       particle.move();
     }
+
+    virusRotation.move();
+    virusLegs.move();
   };
 };
 
