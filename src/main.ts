@@ -32,7 +32,6 @@ const sketch = (p: p5) => {
   let posterOpacity = 0;
 
   let hakenImage: p5.Image;
-  let renderer: p5.Renderer;
 
   function createParticle() {
     const pos = p.createVector(p.random(p.width), p.random(p.height));
@@ -53,7 +52,6 @@ const sketch = (p: p5) => {
   };
 
   p.setup = () => {
-    renderer = p.createCanvas(screen.width, screen.height);
     p.background(0);
 
     for (let i = 0; i < 1000; i++) {
