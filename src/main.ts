@@ -52,6 +52,7 @@ const sketch = (p: p5) => {
   };
 
   p.setup = () => {
+    p.createCanvas(screen.width, screen.height);
     p.background(0);
 
     for (let i = 0; i < 1000; i++) {
