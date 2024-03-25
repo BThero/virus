@@ -28,8 +28,13 @@ const sketch = (p: p5) => {
     p.background(0);
     drawVirus(p, p.createVector(0.5 * p.width, 0.4 * p.height), 1, true);
 
+    const offset = p.createVector(
+      p.map(p.mouseX, 0, p.width, -30, 30),
+      p.map(p.mouseY, 0, p.height, -30, 30)
+    );
+
     for (const particle of particles) {
-      particle.draw(p);
+      particle.draw(p, offset);
       particle.move();
     }
   };

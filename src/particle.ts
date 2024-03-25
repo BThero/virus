@@ -49,11 +49,12 @@ export class Particle {
     );
   }
 
-  draw(p: p5) {
+  draw(p: p5, offset: p5.Vector) {
     p.push();
     p.noStroke();
     p.fill("yellow");
     p.translate(this.pos.x, this.pos.y);
+    p.translate(offset.x, offset.y);
     p.ellipseMode(p.CENTER);
     p.circle(0, 0, this.scale * 20);
     p.pop();
